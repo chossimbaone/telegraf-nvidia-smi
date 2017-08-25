@@ -58,7 +58,7 @@ func main() {
 		return // exit
 	}
 
-	metrics := "fan.speed,memory.total,memory.used,memory.free,pstate,temperature.gpu,name,uuid,compute_mode,index"
+	metrics := "fan.speed,memory.total,memory.used,memory.free,pstate,temperature.gpu,name,uuid,compute_mode,utilization.gpu,utilization.memory,index"
 	gpuCount := getGPUCount(*binPath)
 	// No need to collect data if nvidia-smi reports no
 	if gpuCount == 0 {
@@ -87,6 +87,10 @@ func main() {
 
 		fmt.Printf("pstate=%s,", strings.TrimSpace(strings.Replace(splitResults[4], "P", "", -1))) // strip the P
 		fmt.Printf("temperature=%s,", strings.TrimSpace(splitResults[5])) // in degrees Celcius
-		fmt.Printf("gpu_index=%s\n", strings.TrimSpace(splitResults[9])) // index as reported by smi
+
+		fmt.Printf("utilization_gpu=%s,", strings.TrimSpace(splitResults[9])) // it's a % 0-100
+		fmt.Printf("utilization_memory=%s,", strings.TrimSpace(splitResults[10])) // it's a % 0-100
+
+		fmt.Printf("gpu_index=%s\n", strings.TrimSpace(splitResults[11])) // index as reported by smi
 	}
 }
